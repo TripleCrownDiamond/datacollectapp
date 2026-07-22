@@ -64,6 +64,8 @@ Outillage : pnpm workspaces + Turborepo, ESLint/Prettier partagés, Changesets p
 | ADR-8 | UUID v7 générés côté client | Clés d'idempotence offline, tri temporel naturel, pas de coordination | Auto-increment (impossible offline), UUID v4 (index moins efficaces) |
 | ADR-9 | IA uniquement côté serveur, jobs asynchrones | Clés protégées, coûts contrôlés, dégradable | Appels directs client → LLM (sécurité, coûts) |
 | ADR-10 | S3 présigné + upload par chunks via l'API | Reprise fine des uploads sur réseau instable, quotas contrôlés | Upload direct présigné multipart (reprise moins contrôlable sur 2G) — réévaluable en V2 |
+| ADR-11 | Open-core : **AGPL-3.0** (cœur) + **MIT** (packages/shared) + premium propriétaire | AGPL protège contre la reprise SaaS sans contribution ; MIT favorise l'interopérabilité avec intégrateurs ; premium finance le développement. Détails et frontière open/premium dans [21_MONETISATION §7](21_MONETISATION.md) | AGPL perçue comme restrictive (relicenciable en MIT si frein constaté), MIT seul (pas de protection) |
+| ADR-12 | Fournisseur satellite premium : **Planet** (add-on) + **Sentinel Hub** (socle radar gratuit) | Planet : revisite quotidienne, programme NICFI gratuit ONG forêts, API XYZ/WMS. Sentinel Hub : radar Sentinel-1 gratuit (traverse nuages — indispensable zones tropicales). Voir [08_GIS §2b](08_GIS.md) et [23_COUTS §5](23_COUTS.md) | Maxar (trop coûteux, pas de programme ONG), MapTiler satellite (résolution insuffisante pour usage premium) |
 
 ## 3bis. Couche de données modulaire (base remplaçable)
 
@@ -136,7 +138,8 @@ CI/CD : GitHub Actions — lint/typecheck/tests sur PR ; build & deploy staging 
 
 | Sujet | Échéance | Options |
 |---|---|---|
-| Fournisseur satellite **premium** de référence (revente en add-on) | Phase 3 (carte web) | Esri World Imagery premium, Maxar/Planet (payant) — le **défaut reste sans clé** (EOX Sentinel-2 cloudless) ; voir [08_GIS §2b](08_GIS.md) |
+| ~~Fournisseur satellite premium de référence~~ | ✅ **Tranché** | **Planet** (add-on) + **Sentinel Hub** (socle radar gratuit). Voir [08_GIS §2b](08_GIS.md) et ADR-12 |
+| ~~Licence open-core~~ | ✅ **Tranché** | **AGPL-3.0** (cœur) + **MIT** (shared) + premium propriétaire. Voir [21_MONETISATION §7](21_MONETISATION.md) et ADR-11 |
 | Websockets pour le temps réel web | V2 | SSE vs socket.io vs polling conservé |
 | Passage à l'upload S3 multipart direct | V2 | selon métriques de reprise réelle terrain |
 | Base mobile : ajout de SQLCipher généralisé | ENT | impact perf à mesurer |

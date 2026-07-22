@@ -55,13 +55,29 @@ La carte est un élément **central**, pas un module annexe ([P8](17_PRINCIPES_C
 ### 2.5b Assistant IA de terrain
 Pendant la collecte (fonction en ligne, dégradable — [P6](17_PRINCIPES_CONCEPTION.md)), l'agent peut **dialoguer avec l'IA** : « Ai-je oublié une question ? », « Pourquoi cette réponse est-elle incohérente ? », « Résume ce questionnaire », « Vérifie la cohérence des superficies ». L'IA répond en s'appuyant sur les réponses en cours ; elle **propose**, l'agent décide. Le contrôle qualité en temps réel (orthographe, valeurs improbables, GPS suspect, photo floue…) est décrit en [07_AI §2 (AI-03/AI-09)](07_AI.md).
 
+### 2.5c Consentement (CONSENT-01)
+
+Écran de consentement intégrable en début ou au point d'entrée du formulaire (configurable dans le form builder) :
+
+- **Texte de consentement** multilingue, paramétrable par projet. Affiché en plein écran avant la première question personnelle.
+- **Modes** :
+  - *Requis* : l'utilisateur ne peut pas passer à la suite si refus. Le refus clôt proprement la soumission (statut `refused`, aucune donnée personnelle enregistrée, compté dans les stats de non-consentement).
+  - *Enregistré* : capture accepté/refusé + horodatage + méthode (signature ou oral).
+- **Signature** : composant canvas dédié (tracé au doigt, export PNG) — optionnel, activable par le form builder.
+- **Consentement oral** : case à cocher attestant que l'enquêteur a lu le texte à l'enquêté et que celui-ci a accepté — alternative à la signature pour les contextes à faible littératie.
+- **Refus** : la soumission est close avec le statut `refused` ; zéro donnée personnelle enregistrée ; compteur visible dans les statistiques du projet (taux de non-consentement).
+- **Traçabilité** : le statut `consent_status`, la méthode, l'horodatage et la signature (si présente) sont stockés dans `submissions.meta` et ne sont jamais modifiables après finalisation.
+
+Comportement hors ligne : le texte de consentement est téléchargé avec le formulaire (pas de appel réseau nécessaire). La signature et le statut sont stockés localement et synchronisés à la prochaine sync.
+
 ### 2.6 Formulaire (flux de saisie)
 - Rendu piloté par le schéma JSON via `form-engine` : chaque question → composant de saisie dédié ; logique/validation/calculs évalués par le moteur à chaque changement.
 - Deux modes d'affichage (préférence utilisateur) : pas-à-pas (défaut) ou liste complète. Barre de progression, sommaire des sections, bouton « Enregistrer et quitter » toujours visible.
+- **Navigation pas-à-pas** : boutons Suivant/Précédent, swipe gestuel, indicateur de page (n/N), transition 150 ms ease-out.
 - Sauvegarde auto : à chaque réponse (débounce 500 ms) + toutes les 30 s → table `submissions` (status `draft`).
-- Finalisation : validation complète par le moteur ; si erreurs → liste cliquable des champs en erreur ; si OK → statut `finalized`, ajout à `sync_queue`, retour Accueil avec confirmation.
+- Finalisation : validation complète par le moteur ; si erreurs → liste cliquable des champs en erreur avec messages ; si OK → statut `finalized`, ajout à `sync_queue`, retour Accueil avec confirmation.
 
-Composants de saisie V1 : TextInput (texte/nombre/décimal avec clavier adapté), DatePicker/TimePicker natifs, choix unique (radio / liste recherchable si > 10 options), choix multiple (checkboxes), GPS (voir 2.8), Photo (voir 2.7), Audio (enregistreur pause/reprise), Signature (canvas), Note (affichage), Calcul (lecture seule).
+Composants de saisie V1 : TextInput (texte/nombre/décimal avec clavier adapté), DatePicker/TimePicker natifs, choix unique (radio / liste recherchable si > 10 options), choix multiple (checkboxes), GPS (voir 2.8), Photo (voir 2.7), Audio (enregistreur pause/reprise), Signature (canvas), **Consentement** (voir 2.5c), Note (affichage), Calcul (lecture seule).
 
 ### 2.7 Caméra / médias
 Capture via expo-camera ou import galerie (si autorisé par le formulaire). Pipeline : capture → compression (côté long max 2048 px, qualité 80 %, configurable projet) → EXIF GPS/date optionnels selon config → stockage app-privé → enregistrement `attachments`. Aperçu, reprise, suppression avant finalisation.

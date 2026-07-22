@@ -48,14 +48,40 @@ Base shadcn/ui (web) : Button, Input, Select, Checkbox, RadioGroup, DatePicker, 
 | `StatusBadge` | statut de soumission — couleur + icône + libellé, mapping unique partagé |
 | `SyncIndicator` | état de sync global (n en attente, progression, dernière sync) |
 | `QuestionField` | wrapper de champ de formulaire : label, hint, erreur, marqueur requis/IA — un rendu par type de question |
-| `GpsCapture` | jauge de précision temps réel, seuil, carte |
-| `MediaThumb` | vignette photo/audio/signature avec états (local, uploading %, stored) |
+| `FormNavigation` | barre de progression pas-à-pas (page n/N), boutons Suivant/Précédent, swipe gestuel, indicateur de section active |
+| `ConsentScreen` | écran de consentement plein écran : texte multilingue, cases acceptation/refus, signature canvas, mode oral ; états : lecture, accepté, refusé. En-tête avec compteur et timer de relecture |
+| `GpsCapture` | jauge de précision temps réel, seuil, carte miniature, bouton forcer avec justification |
+| `MediaThumb` | vignette photo/audio/signature avec états (local, uploading %, stored, failed) |
 | `MapView` | wrapper MapLibre : fonds, clustering, couches, légende |
 | `StatCard`, `TimeSeriesChart`, `BreakdownChart` | dashboard (Recharts, tokens de palette data) |
 | `EmptyState` | illustration légère + action principale — jamais d'écran vide muet |
-| `ConfirmDangerDialog` | actions destructives : saisie nominative requise |
+| `LoadingSkeleton` | état de chargement : rects animés (shimmer) calqués sur la structure de la page (carte, liste, détail). Pas de spinner seul sans contexte. Respecte `prefers-reduced-motion` (fade uniquement, pas de shimmer) |
+| `ErrorBanner` | bannière d'erreur multiligne : icône, titre, message détaillé, action de fermeture/retry. Plusieurs niveaux : `network` (sync échouée), `validation` (champs en erreur avec liens), `server` (erreur API avec code lisible) |
+| `ConfirmDangerDialog` | actions destructives : saisie nominative requise, timer de confirmation 3 s avant activation |
 
-Chaque composant : states hover/focus/disabled/loading définis, focus visible (anneau `primary` 2 px), navigation clavier, min 48 dp tactile mobile.
+Chaque composant : states **default/hover/focus/disabled/loading/error** documentés, focus visible (anneau `primary` 2 px), navigation clavier, min 48 dp tactile mobile.
+
+### 6.1 États de formulaire (ErrorBanner + QuestionField)
+
+La gestion des erreurs de formulaire suit une hiérarchie claire :
+
+| Niveau | Composant | Exemple |
+|---|---|---|
+| **Champ** | `QuestionField` avec message inline sous le champ | *« L'âge doit être entre 0 et 120 »* |
+| **Page** | `ErrorBanner` en haut de la page | *« 3 champs obligatoires sont vides »* avec liens cliquables |
+| **Formulaire** | `ErrorBanner` persistante | *« Impossible de finaliser : corrigez les erreurs ci-dessous »* |
+| **App** | `ErrorBanner` globale (Toast style) | *« Connexion perdue. Les données seront synchronisées plus tard. »* |
+
+Les messages d'erreur sont toujours en langage clair, jamais de codes techniques (voir §9).
+
+### 6.2 États de chargement (LoadingSkeleton)
+
+| Contexte | Type de skeleton | Comportement |
+|---|---|---|
+| Liste de soumissions | 6 lignes alternées (50 % / 75 % de largeur) | shimmer jusqu'à 2 s, puis affichage normal ou EmptyState |
+| Carte | Rectangle plein écran 16:9 gris | spinner overlay + texte *« Chargement de la carte… »* |
+| Détail soumission | 4 lignes texte + 1 carré média | apparition progressive (stagger 50 ms) |
+| Dashboard | 3 StatCard squelettes + graphique vide | shimmer, puis transition douce vers les données |
 
 ## 7. Animations
 

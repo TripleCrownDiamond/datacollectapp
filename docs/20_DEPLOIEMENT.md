@@ -27,6 +27,16 @@ Le produit est **le même partout** ([P1](17_PRINCIPES_CONCEPTION.md) : pas de f
 | **PWA / Web installable** | Superviseurs, contrôleurs qualité, analystes sur poste ; collecte d'appoint sans store | Selon le backend pointé | V1 (web) / V2 (PWA offline complète) |
 | **Application bureau** (Tauri/Electron) | Postes bureautiques Windows/macOS/Linux ; environnements sans navigateur moderne | Selon le backend pointé | V2 |
 
+### BYO key (Bring Your Own Key)
+
+Sur tous les modes, l'utilisateur peut fournir **ses propres clés** pour certains services, ce qui déplace le coût variable vers son infrastructure :
+
+- **Clé IA** (Anthropic) : l'utilisateur branche sa propre clé API. Les appels IA partent vers le fournisseur LLM avec sa clé. Applicable sur le free tier SaaS, le Pro et l'auto-hébergé. Signalé explicitement lors de la configuration.
+- **Clé tuiles satellite** : l'utilisateur fournit sa clé MapTiler/Mapbox/Stadia/Bing pour des fonds de carte haute résolution. Le défaut sans clé (OpenFreeMap, EOX Sentinel-2) reste disponible.
+- **Stockage S3 personnalisé** (auto-hébergé Enterprise) : le client utilise son propre bucket S3-compatible (MinIO, Wasabi, Backblaze).
+
+Le BYO key est un **levier clé du free tier soutenable** : le coût IA/tuiles est chez l'utilisateur, pas chez nous. Voir [21_MONETISATION §3](21_MONETISATION.md).
+
 ### 2.1 SaaS (cloud) — défaut
 Notre infrastructure gère tout (Supabase, API, stockage, IA, sauvegardes, mises à jour). Le client crée un compte et démarre. Multi-tenant isolé par `organization_id` ([10_DATABASE §6](10_DATABASE.md)). Hébergement UE par défaut, autres régions en option.
 

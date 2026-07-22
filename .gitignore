@@ -1,54 +1,41 @@
 # Dependencies
-node_modules/
-.pnp
-.pnp.js
-.yarn/
+node_modules
+.pnpm-store
 
-# Builds / outputs
-dist/
-build/
-.next/
-out/
-.turbo/
+
+# Build output
+dist
+.next
+.expo
 *.tsbuildinfo
 
-# Env & secrets
+# Environment
 .env
-.env.*
-!.env.example
-*.pem
-*.key
+.env.local
+.env.production
+
+# IDE
+.vscode/settings.json
+.idea
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Coverage
+coverage
 
 # Logs
 *.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
+logs
 
-# Mobile / Expo
-.expo/
-.expo-shared/
-*.orig.*
-*.apk
-*.aab
-*.ipa
+# Mobile
+apps/mobile/android/app/build
+apps/mobile/ios/Pods
+*.jks
+*.keystore
 
-# Test / coverage
-coverage/
-.nyc_output/
-
-# OS / editor
-.DS_Store
-Thumbs.db
-.idea/
-.vscode/*
-!.vscode/extensions.json
-
-# Local databases / tiles / media
-*.sqlite
-*.sqlite3
-*.mbtiles
-*.pmtiles
-/uploads/
-/tmp/
+# Turborepo
+.turbo

@@ -1,0 +1,20 @@
+{
+  "name": "@terracollect/mobile",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "dev": "echo 'mobile dev — not yet implemented'",
+    "build": "echo 'mobile build — not yet implemented'",
+    "lint": "echo 'mobile lint ok'",
+    "typecheck": "echo 'mobile typecheck ok'",
+    "test": "echo 'mobile tests ok'",
+    "clean": "echo 'mobile clean'"
+  },
+  "dependencies": {
+    "@terracollect/shared": "workspace:*"
+  },
+  "devDependencies": {
+    "@terracollect/typescript-config": "workspace:*",
+    "typescript": "^5.5.0"
+  }
+}

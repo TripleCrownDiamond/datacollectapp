@@ -33,12 +33,12 @@ Montants **indicatifs** à valider par étude de marché et coûts réels (IA, s
 
 | Plan | Cible | Prix indicatif | Inclus (points clés) | Limites |
 |---|---|---|---|---|
-| **Communauté (Free)** | Découverte, petits projets, étudiants | 0 € | 1 organisation, collecteurs illimités, collecte offline, form builder, export CSV/GeoJSON, **quota IA de découverte** (ex. 20 générations/mois) | 1-2 sièges gestion, X soumissions/mois, stockage limité, SIG de base |
+| **Communauté (Free)** | Découverte, petits projets, étudiants | 0 € | 1 organisation, collecteurs illimités, collecte offline, form builder, export CSV/GeoJSON, **format .md structuré** (import/export déterministe, 0 € de coût IA), génération de template .md, **BYO key IA/tuiles** possible, tuiles par défaut sans clé, **quota IA de découverte** (ex. 20 générations/mois) | 1-2 sièges gestion, X soumissions/mois, stockage limité (~1 Go), SIG de base, compression photo forcée, purge automatique |
 | **Pro** | Consultant, petite équipe, chercheur | ~ 29-49 €/mois | Tout Free + plus de soumissions/stockage, quota IA élargi, XLSForm import/export, exports avancés | Sièges gestion limités, SIG avancé partiel |
 | **Équipe / ONG** | ONG, labo, bureau d'études | ~ 149-299 €/mois | **SIG avancé complet** (placettes, transects, géofencing), **contrôle qualité IA**, analyse, plus de sièges, support prioritaire | Quotas généreux, add-ons au-delà |
 | **Enterprise** | Gouvernements, bailleurs, grands programmes | Sur devis | **Auto-hébergement / souveraineté**, SSO, API publique, SLA, quotas sur mesure, IA dédiée, DPA | — |
 
-**Réductions** : tarif **ONG/académique** (le cœur de cible), engagement annuel (~2 mois offerts), programmes bailleurs (licences multi-projets).
+**Réductions** : tarif **ONG/académique** (le cœur de cible), engagement annuel (~2 mois offerts), programmes bailleurs (licences multi-projets). **Sponsored free** pour ONG vérifiées (adossé à des subventions le cas échéant).
 
 ## 4. Sources de revenus complémentaires
 
@@ -53,6 +53,19 @@ Montants **indicatifs** à valider par étude de marché et coûts réels (IA, s
 
 **Note sur les coûts variables (marge)** : l'IA et les tuiles satellite sont des **coûts marginaux réels** ([07_AI §4](07_AI.md), [09 §9](09_ARCHITECTURE.md)). Les quotas et add-ons IA doivent couvrir ces coûts avec marge ; l'IA n'est jamais « illimitée » sur les plans bas. Le stockage médias et la bande passante sont provisionnés par plan. **Structure de coûts détaillée (infrastructure, IA à l'usage, installation auto-hébergée, TCO client) : [23_COUTS](23_COUTS.md).**
 
+### Leviers free tier (coût marginal ~0)
+
+Le plan gratuit doit être généreux sans saigner les marges. Les leviers identifiés :
+
+1. **Génération .md déterministe par défaut** — le plan free utilise le format .md structuré (FORM-MD-01) parsé sans IA. L'IA reste disponible via un quota limité ou en payant. **Coût : 0 € par import.**
+2. **BYO key (Bring Your Own Key)** — l'utilisateur gratuit peut brancher sa propre clé API Anthropic (IA) et sa propre clé de tuiles satellite. Le coût variable est **chez lui**, pas chez nous. Applicable aussi à l'auto-hébergé.
+3. **Tuiles sans clé par défaut** — fonds OSM/satellite gratuits intégrés (OpenFreeMap, EOX Sentinel-2). Aucun coût de licence par utilisateur.
+4. **Plafonds free stricts** — stockage limité (~1 Go), soumissions/mois plafonnées, compression photo forcée (max 2048 px), purge automatique des médias anciens.
+5. **Auto-hébergement open-core** — le cœur de collecte est open source. L'infrastructure est à la charge du client, coût nul pour nous.
+6. **Sponsored free pour ONG vérifiées** — comptes gratuits renforcés pour les ONG éligibles, adossés à des subventions ou partenariats bailleurs.
+
+**Résultat** : un free tier généreux qui coûte quasi rien à opérer, même avec des milliers d'utilisateurs.
+
 ## 5. Logique d'acquisition (funnel)
 
 1. **Free** — capter les utilisateurs frustrés de Kobo/ODK (import XLSForm pour migrer sans ressaisie, [18_XLSFORM](18_XLSFORM.md)) ; l'effet « wow » de la génération IA en démonstration.
@@ -65,12 +78,43 @@ Conversion free→payant, revenu net par organisation (ARPA), rétention (NRR), 
 
 > **À trancher avant lancement commercial** : les montants exacts, l'unité de volume (soumissions/mois vs stockage), et le périmètre précis du free tier. Ce document fixe la **structure** ; les chiffres se calent sur les coûts réels observés en V1 et une étude de prix auprès des pilotes.
 
-## 7. Open-source vs propriétaire — modèle recommandé : **open-core**
+## 7. Open-source vs propriétaire — modèle adopté : **open-core**
 
-Tension stratégique à trancher tôt ([24 §7](24_RISQUES_ET_LACUNES.md)) : notre analyse concurrentielle mise sur la **communauté Kobo/ODK**, or ces outils sont **open source** et notre monétisation est SaaS. Modèle recommandé : **open-core**.
+**Décision prise (V0).** Modèle open-core : cœur open source + fonctions premium propriétaires. Cette décision répond au risque R5 ([24_RISQUES_ET_LACUNES](24_RISQUES_ET_LACUNES.md)).
 
-- **Cœur open source** (licence permissive ou copyleft à décider) : collecte offline, form-engine, moteur de sync, app mobile, export. C'est ce qui bâtit la **confiance** (les ONG/gouvernements auditent le code qui touche leurs données) et l'**adoption** (communauté, contributions, migration depuis Kobo/ODK).
-- **Fonctions premium propriétaires** : IA (génération, contrôle qualité, chat, rapports), SIG avancé (placettes/transects/tuiles serveur), analyse statistique, fonctionnalités Enterprise (SSO, audit avancé, support/SLA), et le **SaaS hébergé** (commodité).
-- **Cohérence souveraineté** : le cœur open + l'auto-hébergement ([20_DEPLOIEMENT](20_DEPLOIEMENT.md)) donnent aux clients sensibles une garantie que ni Kobo (fonctions limitées) ni Esri (fermé) n'offrent ensemble.
+### 7.1 Licence
 
-**À décider** : la licence exacte du cœur (MIT/Apache vs AGPL — l'AGPL protège contre la reprise SaaS par un tiers), la frontière précise open/premium, et le rythme d'ouverture (le cœur peut s'ouvrir dès qu'il est stable, pas forcément au jour 1). Impact adoption/GTM majeur : à traiter avant la bêta publique.
+| Couche | Licence | Justification |
+|---|---|---|
+| **Cœur** : collecte offline, form-engine, moteur de sync, app mobile, app web de base, exports | **AGPL-3.0** | Protège contre la reprise SaaS par un tiers sans contribution. Quiconque modifie le code et le rend accessible en réseau (SaaS) DOIT publier ses modifications. Les ONG/gouvernements qui l'installent en interne ne sont pas impactées (pas de redistribution commerciale). |
+| **`packages/shared`** : types, schémas zod, constantes | **MIT** | Permet aux intégrateurs (Power BI, R, Python, QGIS) d'utiliser nos types sans contrainte AGPL. Favorise l'interopérabilité ouverte ([P10](17_PRINCIPES_CONCEPTION.md)). |
+| **Fonctions premium** : IA, SIG avancé (placettes, transects, tuiles serveur), analyse statistique, Enterprise (SSO, audit, support) | **Propriétaire** | Finance le développement. Distribué uniquement dans les plans Pro/Team/Enterprise et auto-hébergé. |
+
+**Note** : si l'AGPL s'avère être un frein à l'adoption constaté sur le terrain (retours utilisateurs), on pourra relicencier le cœur en MIT — beaucoup plus facile que l'inverse.
+
+### 7.2 Contenu open vs premium
+
+| Module | Open (AGPL) | Premium (propriétaire) |
+|---|---|---|
+| Collecte offline (mobile) | ✅ Tout | — |
+| Form-engine (tous types questions, logique, validation, calculs) | ✅ Tout | — |
+| Moteur de synchronisation | ✅ Tout | — |
+| Builder web (édition visuelle) | ✅ Tout | — |
+| Export XLSForm, .md structuré | ✅ Tout | — |
+| Table des soumissions, carte points, dashboard basique | ✅ Tout | — |
+| Exports CSV, GeoJSON | ✅ Tout | — |
+| **IA** (génération formulaires, contrôle qualité, chat, rapports) | ❌ | ✅ Fonctions IA complètes ; quota de découverte dans le SaaS free |
+| **SIG avancé** (placettes, transects, buffers, géofencing) | ❌ | ✅ Modules SIG spécialisés |
+| **Analyse statistique** (ANOVA, régression, tableaux croisés) | ❌ | ✅ Moteur d'analyse |
+| **Import XLSForm round-trip**, import Word/PDF | ❌ | ✅ Import avancé |
+| OpenRosa interop | ❌ | ✅ INTEROP-01 |
+| SSO, audit log complet, API publique, webhooks | ❌ | ✅ Enterprise |
+| Auto-hébergement packagé (Docker/Helm) | ❌ | ✅ Licence Enterprise (le cœur AGPL reste téléchargeable et auto-installable sans licence ; le support et l'empaquetage sont premium) |
+
+### 7.3 Cohérence souveraineté
+
+Le cœur open + l'auto-hébergement ([20_DEPLOIEMENT](20_DEPLOIEMENT.md)) donnent aux clients sensibles une garantie que ni Kobo (fonctions limitées) ni Esri (fermé) n'offrent ensemble : ils peuvent auditer le code qui traite leurs données, et l'installer sur leur propre infrastructure, sans aucune dépendance vers notre cloud.
+
+### 7.4 Rythme d'ouverture
+
+Le cœur sera ouvert dès la première version stable (V0-M5, premier projet terrain). Pas d'ouverture « à l'avance » pendant le développement solo — le temps de stabiliser l'API et les interfaces avant de les figer dans le contrat open source.

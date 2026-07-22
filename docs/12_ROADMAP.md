@@ -23,18 +23,17 @@ Découpage par versions. Les IDs renvoient au [catalogue de fonctionnalités](03
 
 **Objectif : une ONG remplace KoboToolbox pour un projet réel.**
 
+> La V0 a déjà livré le socle (backend, form-engine, web, mobile). La V1 s'appuie sur cette base et ajoute les différenciateurs qui ne mettent pas en péril la fiabilité.
+
 | Jalon | Contenu | Critère de sortie |
 |---|---|---|
-| M1 — Fondations (3 sem.) | Monorepo, CI, docker-compose, `shared`, squelette des 3 apps | `pnpm build/test` verts, déploiement staging vide |
-| M2 — Backend cœur (5 sem.) | Auth, orgs, projets, formulaires versionnés, soumissions, attachments chunks, sync | Tests e2e API verts sur tout le contrat V1 ([11_API.md](11_API.md)) |
-| M3 — Form-engine (3 sem., parallèle à M2) | Types V1, logique, validation, calculs, fixtures de référence | Couverture complète, utilisé par l'aperçu web |
-| M4 — Web (5 sem.) | Auth, projets, builder + aperçu, table soumissions, carte points, dashboard basique, exports CSV/GeoJSON, équipe | Parcours 1 du PRD < 1 h en test utilisateur |
-| M5 — Mobile (6 sem., chevauche M4) | Auth offline, téléchargement projets, saisie complète, médias, GPS, file de sync, historique | Critère d'acceptation global n° 1 et 2 du [PRD §8](02_PRD.md) |
-| M6 — IA v1 + polissage (3 sem.) | AI-01 (génération de formulaires), i18n FR/EN, accessibilité, Sentry, docs utilisateur | Bêta privée : 3 organisations pilotes |
-
-La V1 ajoute au socle V0 les différenciateurs qui ne mettent pas en péril la fiabilité : **génération de formulaires par IA** (AI-01), moteur de calcul instantané (FORM-01), export XLSForm (FORM-XLS-01), multi-projets simultanés et statistiques terrain offline (PLT-01b, ANA-01), 8 rôles configurables (PLT-01), **module de consentement complet + rétention/effacement** (CONSENT-01, [25 §8](25_ETHIQUE_CONSENTEMENT.md)), CGU/confidentialité/DPA, audit log.
+| V1-M1 — IA + .md structuré (2 sem.) | AI-01 (génération de formulaires), parseur .md structuré (FORM-MD-01) + export .md, export XLSForm (FORM-XLS-01) | formulaire généré par IA éditable, formulaire importé depuis .md structuré |
+| V1-M2 — Équipe & workflow (2 sem.) | Module de consentement complet (CONSENT-01), workflow approbation/rejet (WEB-05), 8 rôles configurables (PLT-01), multi-projets (PLT-01b), statistiques terrain offline (ANA-01) | rejet + correction + re-sync fonctionnel ; consentement capturé et tracé |
+| V1-M3 — Polissage & juridique (3 sem.) | i18n FR/EN, accessibilité, audit log de base (PLT-02a), CGU/confidentialité/DPA, rétention paramétrable, Sentry, docs utilisateur | Bêta privée : 3 organisations pilotes |
 
 **Sortie V1 :** pilotes réels convertis, différenciation IA en place, base juridique prête pour la vente.
+
+> **Comparaison V0 vs V1 :** la V0 (Socle fiable, jalons V0-M1 à V0-M6) est le *prérequis* — collecte offline, sync robuste, builder manuel. La V1 (jalons V1-M1 à V1-M3) ajoute les *différenciateurs* : IA, .md structuré, consentement, rôles, workflow, conformité juridique. On ne commence la V1 qu'une fois la V0 prouvée sur le terrain.
 
 ## Version 2 — « SIG pro + qualité + interopérabilité » (~4 mois après V1)
 
@@ -43,6 +42,7 @@ La V1 ajoute au socle V0 les différenciateurs qui ne mettent pas en péril la f
 - SIG : cartes offline (GIS-03), placettes (GIS-04), transects (GIS-05), buffers (GIS-06), géofencing (GIS-07), import/export Shapefile-KML (GIS-09/10), calculs de surface (GIS-11), éditeur de couches (GIS-12), visualisation temps réel équipe (GIS-13), mesures & repositionnement (GIS-14), GPS lignes/polygones (COL-05).
 - Qualité & IA terrain : contrôle qualité temps réel (AI-03), doublons (AI-04), **assistant IA de terrain** (AI-09), workflow d'approbation enrichi.
 - Formulaires : **import XLSForm + round-trip** (FORM-XLS-02), **édition avancée/expressions** (FORM-XLS-03), **import Word/PDF par IA** (FORM-XLS-04), listes dynamiques/cascades (FORM-02), suggestions IA (AI-02), traduction (AI-05), modèles (WEB-10), résumé IA (AI-06, ANA-05a).
+- Interopérabilité : **endpoints OpenRosa** (INTEROP-01) — formList, form.xml, submission — pour capter les utilisateurs ODK/Kobo sans migration immédiate.
 - Collecte : vidéo (COL-08), QR (COL-10), scan documents (COL-13), pièces jointes (COL-14), données de référence offline (SYN-07), sync intelligente (SYN-06).
 - Plateforme : temps réel web (websockets/SSE), rétention RGPD (PLT-07a).
 

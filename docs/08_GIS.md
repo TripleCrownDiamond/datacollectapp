@@ -80,7 +80,10 @@ MapLibre accepte **n'importe quelle source de tuiles** (XYZ raster, WMTS, style 
 | **Payant (haute valeur)** | **Mapbox / MapTiler** au-delà du free tier | vecteur + satellite | ✅ | haute rés | ✅ | facturation à la requête/MAU |
 | | **Esri ArcGIS World Imagery** (premium) | raster satellite | ✅ | haute rés | selon CGU | écosystème Esri |
 | | **Google Maps** | raster/vecteur | ✅ | très bon | ❌ (offline restreint) | cher, CGU restrictives sur le cache offline |
-| | **Maxar / Planet** | satellite commercial | ✅ | **très haute rés, récente** | selon contrat | **le plus cher** — imagerie récente à la demande, réservé ENT / add-on payant |
+| | **Planet** (recommandé) | satellite VHR | ✅ | 50 cm (SkySat) / 3,7 m (Scope) | après cache | revisite quotidienne → trouées nuages zones tropicales ; **programme NICFI** gratuit pour ONG forêts (mosaïque mensuelle) |
+| | **Maxar** | satellite VHR | ✅ | ≤ 30 cm | après cache | résolution maximale, coût élevé, pas de programme ONG — alternative premium pour besoins ponctuels |
+| | **Airbus OneAtlas** | satellite VHR | ✅ | 50 cm | après cache | bonne couverture, programme ONG restreint — alternative |
+| **Socle radar gratuit (intégré défaut)** | **Sentinel Hub** (Sinergise) | radar (S-1) + optique (S-2) | ❌ (données libres) | 10 m (S-2) / radar S-1 | **Indispensable zones tropicales** : le radar Sentinel-1 traverse les nuages. API OGC/WMS compatible MapLibre. Intégré par défaut comme couche complémentaire. |
 | **Auto-hébergé / propre** | OpenMapTiles, TileServer GL | vecteur | ❌ | vecteur OSM | ✅ | pile self-hosted (souveraineté) |
 | | Imagerie du client (drone, satellite acheté) | raster (MBTiles/PMTiles/COG) | ❌ | selon source | ✅ | import de fonds propriétaires du client |
 
@@ -98,7 +101,15 @@ Découplé du fournisseur en ligne : les zones offline ([GIS-03](#gis-03--cartes
 
 ### Impact coûts
 
-Détail et arbitrage dans [23_COUTS §5](23_COUTS.md). Résumé : **défaut sans clé = 0 € par requête** ; les fonds premium (haute résolution) sont soit sur la **clé du client** (mode b), soit un **add-on payant** répercuté (Maxar/Planet). La génération de cartes offline est limitée par plan (surface × zoom).
+Détail et arbitrage dans [23_COUTS §5](23_COUTS.md). Résumé :
+
+- **Défaut sans clé = 0 € par requête** : OpenFreeMap (plan), EOX Sentinel-2 cloudless (satellite), AWS Terrain (relief).
+- **Socle radar gratuit** : Sentinel Hub (Sentinel-1) intégré par défaut — traverse les nuages, indispensable zones tropicales.
+- **Add-on premium** : **Planet** (SkySat/Scope) comme fournisseur premium de référence — programme NICFI gratuit pour ONG forêts, ou BYO clé client.
+- Les fonds premium sont soit sur la **clé du client** (mode b), soit un **add-on payant** répercuté.
+- Génération de cartes offline limitée par plan (surface × zoom).
+
+Voir la matrice complète en [tableau §2b](#2b-fonds-de-carte--fournisseurs-de-tuiles-du-gratuit-au-premium).
 
 ## 3. Performance
 

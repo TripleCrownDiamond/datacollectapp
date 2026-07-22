@@ -75,6 +75,7 @@ Détail : [08_GIS.md](08_GIS.md).
 | GIS-12 | Éditeur de couches web | Dessin et édition de polygones/lignes/points de référence côté web | V2 |
 | GIS-13 | Visualisation temps réel équipe | Voir ses collectes et celles des autres membres, superpositions, doublons, erreurs de géolocalisation | V2 |
 | GIS-14 | Mesures & manipulation | Dessin, mesure de distances/surfaces, buffers auto, repositionnement assisté | V2 |
+| GIS-15 | Intégration Planet/NICFI | Fond satellite haute résolution Planet (SkySat/Scope) en add-on. Programme NICFI gratuit pour ONG forêts (mosaïque mensuelle). Radar Sentinel-1 via Sentinel Hub intégré par défaut en socle gratuit | V2 |
 
 ## 5. Web — gestion & analyse
 
@@ -103,6 +104,8 @@ Détail : [18_XLSFORM.md](18_XLSFORM.md).
 | FORM-XLS-02 | Import XLSForm + round-trip | Migration sans perte depuis Kobo/ODK | V2 |
 | FORM-XLS-03 | Édition avancée (expressions) | Accès direct relevant/constraint/calculation, vue source | V2 |
 | FORM-XLS-04 | Import Word / PDF par IA | Extraction d'un questionnaire depuis .docx/.pdf → brouillon | V2 |
+| FORM-MD-01 | Format .md structuré de questionnaire | Import/export d'un questionnaire en Markdown structuré, parse déterministe sans IA. Génération .md par défaut sur le free tier (0 € de coût IA) | V1 |
+| INTEROP-01 | Compatibilité OpenRosa | Endpoints `formList`, `form.xml`, `submission` au standard OpenRosa pour interop avec ODK Collect, KoboCollect, Enketo. Soumissions marquées `source: 'openrosa'` | V2 |
 
 ## 7. Analyse & rapports
 

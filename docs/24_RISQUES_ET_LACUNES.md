@@ -40,7 +40,7 @@ Gravité : 🔴 critique · 🟠 importante · 🟡 à traiter.
 | R4 | Cœur sensible vibecodé à l'aveugle | 🔴 | Sync/crypto/auth = là où P9 se joue | Spécifier + tester **avant** de générer ; relire ligne à ligne | §1, [09 §6](09_ARCHITECTURE.md) |
 | R5 | Open-source vs propriétaire non tranché | 🟠 | Conditionne adoption, confiance, GTM (Kobo/ODK sont open) | Décision **open-core** actée | [21_MONETISATION §7](21_MONETISATION.md) |
 | R6 | Aucune validation terrain | 🟠 | Risque de construire le mauvais produit | 10–15 entretiens de découverte **avant** de coder | §5 |
-| R7 | Migration Kobo/ODK sous-développée | 🟠 | C'est le meilleur levier d'adoption | Importer **formulaires ET données**, pas juste XLSForm | [18_XLSFORM](18_XLSFORM.md) |
+| R7 | Migration Kobo/ODK sous-développée | 🟠 | C'est le meilleur levier d'adoption | Importer **formulaires ET données**, pas juste XLSForm. Enrichir avec **interop OpenRosa** (INTEROP-01) : exposer les endpoints OpenRosa pour que les apps ODK/Kobo puissent envoyer leurs soumissions directement — adoption sans migration forcée | [18_XLSFORM](18_XLSFORM.md) (§7b, §8) |
 | R8 | Juridique concret absent (CGU, confidentialité, DPA) | 🟠 | Indispensable dès le 1er client Enterprise | Modèles à rédiger avant vente | [25 §6](25_ETHIQUE_CONSENTEMENT.md) |
 | R9 | i18n réelle : RTL + langues du Sud | 🟡 | Cible mondiale (arabe RTL, swahili, PT, ES) | Prévoir RTL et pluralisation dès l'archi UI | [04_UX](04_UX.md) |
 | R10 | Doc utilisateur & communauté | 🟡 | Adoption Kobo/ODK doit beaucoup à leur communauté | Centre d'aide minimal + stratégie communauté (post-V0) | [12_ROADMAP](12_ROADMAP.md) |
@@ -61,12 +61,15 @@ Ne pas coder 6 mois sur des hypothèses. **10–15 entretiens** de découverte (
 
 Règle : pour la colonne de droite, **écrire les tests d'abord** (idempotence, injection de pannes), puis générer, puis relire. L'IA est la plus faible exactement là où l'enjeu est le plus fort.
 
-## 7. Décisions stratégiques à prendre maintenant
+## 7. Décisions stratégiques (tranchées)
 
-1. **Périmètre V0** (§3) — acté ici, propagé à la roadmap.
-2. **Open-core** — cœur de collecte open source (confiance/adoption), fonctions premium (IA, SIG avancé, Enterprise) propriétaires : recommandé, à confirmer ([21 §7](21_MONETISATION.md)).
-3. **Nom & domaine** — voir [NOMS_MARQUE](NOMS_MARQUE.md).
-4. **Fournisseur satellite premium** de référence (revente add-on) — [08_GIS §2b](08_GIS.md).
+| Décision | Statut | Détail |
+|---|---|---|
+| Périmètre V0 (§3) | ✅ **Acté** | Socle fiable avant tout différenciateur |
+| Modèle open-core | ✅ **AGPL cœur + MIT shared + premium propriétaire** | Licence cœur AGPL-3.0, packages/shared en MIT, fonctions premium propriétaires. Frontière détaillée dans [21_MONETISATION §7](21_MONETISATION.md) |
+| Fournisseur satellite premium | ✅ **Planet** (add-on) + **Sentinel Hub** (socle gratuit radar) | Planet comme add-on premium (avec NICFI gratuit pour ONG forêts), Sentinel Hub pour le radar Sentinel-1 gratuit en socle. Voir [08_GIS §2b](08_GIS.md) |
+| Nom & domaine | ⏳ **À faire** | Voir [NOMS_MARQUE](NOMS_MARQUE.md) |
+| Licence auto-hébergée | ⏳ **À définir** | Structure dans [21_MONETISATION §4](21_MONETISATION.md), montants à caler sur coûts réels V1
 
 ## 8. En une phrase
 

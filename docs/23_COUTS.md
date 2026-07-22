@@ -4,6 +4,21 @@ Modèle de coûts de la plateforme : ce que **nous** dépensons pour opérer le 
 
 > **Tous les montants sont indicatifs (ordres de grandeur début 2026) et à vérifier** avant tout devis ou communication. Les tarifs cloud et IA évoluent ; recalibrer sur les coûts réels observés dès la V1.
 
+### Leviers de réduction des coûts sur le free tier
+
+Le plan gratuit doit rester viable économiquement. Les leviers identifiés (détaillés dans [21_MONETISATION](21_MONETISATION.md)) :
+
+| Levier | Impact coût | Détail |
+|---|---|---|
+| **Génération .md déterministe** | **0 €/import** (vs 0,10–0,30 $/import IA) | Le format .md structuré (FORM-MD-01) est parsé sans LLM. L'IA n'est pas nécessaire pour importer un questionnaire bien formé. |
+| **BYO key IA** | Coût IA transféré au client | L'utilisateur branche sa propre clé Anthropic. Zéro coût variable pour nous sur ses appels IA. |
+| **BYO key tuiles** | Coût tuiles transféré au client | L'utilisateur fournit sa propre clé de fournisseur satellite. Le défaut sans clé est gratuit. |
+| **Compression photo forcée** | Stockage médias réduit ~3× | 2048 px par défaut, configurable vers le bas sur le free. |
+| **Plafonds stricts** | Coûts bornés | 1 Go stockage, X soumissions/mois, purge automatique des médias anciens (> 90 jours). |
+| **Purge automatique** | Stockage contenu | Les médias de plus de 90 jours sur le free sont purgés (les données texte restent). |
+
+**Résultat** : un utilisateur free qui utilise le .md structuré, apporte sa clé IA et utilise les tuiles par défaut coûte **~0 €/mois** au-delà du stockage de base (~quelques centimes).
+
 ## 1. Coûts d'infrastructure SaaS (ce que nous opérons)
 
 Coûts mensuels de notre plateforme, par palier de charge. Hébergement UE.
@@ -90,7 +105,19 @@ Matrice complète des fournisseurs et modèle de configuration : [08_GIS §2b](0
 | **Premium haute résolution** | Esri World Imagery premium, **Maxar / Planet** | élevé (abonnement/surface) | add-on payant répercuté (ENT) |
 | **Auto-hébergé / propre** | OpenMapTiles self-hosted, imagerie drone/satellite du client (MBTiles/PMTiles) | coût infra du client | le client (souveraineté) |
 
-**Stratégie** : le **défaut est gratuit et sans clé** (adoption immédiate, marge protégée) ; la haute résolution récente (Maxar/Planet) reste un **add-on payant** ou passe par la **clé du client**. La génération de cartes offline est limitée par plan (surface × zoom). Reste une décision ouverte : le fournisseur satellite **premium de référence** que nous revendrons en add-on ([09_ARCHITECTURE §9](09_ARCHITECTURE.md)).
+**Décision prise — Fournisseur premium de référence : Planet (add-on) + Sentinel Hub (socle radar gratuit).**
+
+| Couche | Fournisseur | Coût pour nous | Coût pour le client | Offline |
+|---|---|---|---|---|
+| Socle satellite libre | EOX Sentinel-2 cloudless | **0 €** (données libres) | 0 € | ✅ via cache |
+| Socle radar (zones tropicales) | **Sentinel Hub** (Sentinel-1) | **0 €** (données Copernicus) | 0 € sur le socle ; API avancée en BYO clé | ❌ (online only en socle) |
+| Plan vecteur par défaut | OpenFreeMap / Protomaps | **0 €** (~0 € de bande passante) | 0 € | ✅ PMTiles |
+| Haute résolution (≤ 1 m) | **Planet** (SkySat/Scope) | Négociable (volume) | **Add-on** : au coût Planet + marge, ou BYO clé client | via cache (selon CGU) |
+| ONG forêts (gratuit) | Planet via **NICFI** | **0 €** | 0 € pour ONG éligibles | via cache |
+
+**Stratégie** : le **défaut est gratuit et sans clé** (adoption immédiate, marge protégée). Le radar Sentinel-1 est intégré gratuitement en complément du satellite optique (essentiel pour les zones tropicales — foresterie/agriculture). Planet est l'add-on premium de référence, avec le programme **NICFI** (gratuit pour ONG forêts) comme levier d'adoption. Le client peut aussi BYO sa propre clé Planet ou tout autre fournisseur. Voir la matrice complète dans [08_GIS §2b](08_GIS.md).
+
+La génération de cartes offline est limitée par plan (surface × zoom).
 
 ## 6. Unit economics & marge (interne)
 

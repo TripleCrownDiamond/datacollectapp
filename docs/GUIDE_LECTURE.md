@@ -106,7 +106,7 @@ Ordre **strict** (chaque étape produit une base testable) :
 | « Comment exporter vers QGIS / Power BI / R ? » | [11_API §12–14](11_API.md) + [19_ANALYSE](19_ANALYSE.md) |
 | « Que fait l'app sans réseau ? » | [04_UX §2](04_UX.md) + [05_MOBILE](05_MOBILE.md) |
 | « Comment sont calculées les superficies ? » | [08_GIS §2](08_GIS.md) |
-| « Peut-on importer un formulaire Word/PDF/XLSForm ? » | [18_XLSFORM](18_XLSFORM.md) + [07_AI §2](07_AI.md) |
+| « Peut-on importer un formulaire ? » | **.md structuré (déterministe, 0 €)** : [18_XLSFORM §9](18_XLSFORM.md) · **XLSForm** : [18_XLSFORM §6](18_XLSFORM.md) · **Word/PDF** (par IA) : [07_AI §2](07_AI.md) |
 | « Peut-on l'installer sur nos serveurs / changer de base ? » | [20_DEPLOIEMENT](20_DEPLOIEMENT.md) + [09_ARCHITECTURE §3bis](09_ARCHITECTURE.md) |
 | « Quel modèle économique / quels prix ? » | [21_MONETISATION](21_MONETISATION.md) |
 | « Combien ça coûte à opérer / à auto-héberger / en IA ? » | [23_COUTS](23_COUTS.md) |

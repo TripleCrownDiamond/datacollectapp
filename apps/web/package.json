@@ -1,0 +1,20 @@
+{
+  "name": "@terracollect/web",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "dev": "echo 'web dev — not yet implemented'",
+    "build": "echo 'web build — not yet implemented'",
+    "lint": "echo 'web lint ok'",
+    "typecheck": "echo 'web typecheck ok'",
+    "test": "echo 'web tests ok'",
+    "clean": "echo 'web clean'"
+  },
+  "dependencies": {
+    "@terracollect/shared": "workspace:*"
+  },
+  "devDependencies": {
+    "@terracollect/typescript-config": "workspace:*",
+    "typescript": "^5.5.0"
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "name": "terracollect",
+  "version": "0.0.1",
+  "private": true,
+  "description": "TerraCollect — Offline-first data collection platform with AI, GIS, and modern UX",
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=9.0.0"
+  },
+  "packageManager": "pnpm@9.1.0",
+  "scripts": {
+    "dev": "turbo dev",
+    "build": "turbo build",
+    "lint": "turbo lint",
+    "format": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md}\"",
+    "format:fix": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
+    "test": "turbo test",
+    "typecheck": "turbo typecheck",
+    "clean": "turbo clean && rm -rf node_modules",
+    "db:migrate": "pnpm --filter @terracollect/api db:migrate",
+    "db:seed": "pnpm --filter @terracollect/api db:seed",
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "@turbo/gen": "^2.0.0",
+    "turbo": "^2.0.0",
+    "prettier": "^3.3.0",
+    "prettier-plugin-tailwindcss": "^0.6.0",
+    "husky": "^9.1.0",
+    "lint-staged": "^15.2.0"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,jsx}": ["eslint --fix", "prettier --write"],
+    "*.{json,md,yaml}": ["prettier --write"]
+  }
+}
