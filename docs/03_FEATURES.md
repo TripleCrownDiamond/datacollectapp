@@ -1,6 +1,6 @@
 # 03 — Catalogue des fonctionnalités
 
-Catalogue exhaustif, priorisé par version (V1 = MVP, V2, V3, ENT = Enterprise, IA+ = version IA avancée — voir [12_ROADMAP.md](12_ROADMAP.md)). Chaque fonctionnalité implémentée doit référencer son ID.
+Catalogue exhaustif, priorisé par version (V1 = MVP, V2, V3, ENT = Enterprise, IA+ = version IA avancée — voir [12_ROADMAP.md](12_ROADMAP.md)). Les modules futurs (télédétection, drone, IoT, plugins…) sont catalogués dans [27_FUTURE_MODULES.md](27_FUTURE_MODULES.md). Chaque fonctionnalité implémentée doit référencer son ID.
 
 ## 1. Collecte (mobile)
 

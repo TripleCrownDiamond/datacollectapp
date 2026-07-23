@@ -10,6 +10,16 @@ Donner aux ONG, chercheurs, entreprises et administrations — en particulier da
 
 Notre objectif n'est **pas** de reproduire KoboToolbox, ODK Collect ou Survey123, mais de concevoir la plateforme de collecte de données **la plus simple, la plus intelligente et la plus performante** pour les agents de terrain, les superviseurs, les chercheurs, les ONG, les entreprises et les administrations.
 
+## Vision architecturale : modulaire et extensible
+
+La plateforme est conçue comme une architecture **modulaire**, **extensible** et **plug-and-play**.
+
+Même si certaines fonctionnalités (IoT, drones, télédétection...) ne sont pas disponibles lors du lancement du MVP, toute l'architecture est prête à les accueillir sans refonte majeure. Chaque module peut être développé, déployé, activé ou désactivé indépendamment.
+
+Cette vision modulaire garantit que le MVP reste léger, mais que toutes les interfaces, API et modèles de données sont conçus dès le départ pour accueillir des modules futurs — satellites, drones, capteurs IoT, analyses géospatiales avancées et intelligence artificielle — sans nécessiter de refonte.
+
+Voir [27_FUTURE_MODULES.md](27_FUTURE_MODULES.md) pour le catalogue complet des modules planifiés.
+
 ## La double exigence de chaque fonctionnalité
 
 Toute fonctionnalité du produit doit servir **au moins un** de ces deux buts, sans jamais dégrader l'autre :

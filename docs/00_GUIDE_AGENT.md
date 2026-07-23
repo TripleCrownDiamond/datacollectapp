@@ -2,7 +2,7 @@
 
 Ce document est le **point d'entrée obligatoire** pour tout agent de développement autonome (et pour tout nouveau développeur). Il définit l'ordre de construction, les conventions et les critères de complétion. La documentation `docs/` est la **source de vérité** : en cas de doute, elle prime sur toute supposition.
 
-> Voir aussi le [Guide de lecture](GUIDE_LECTURE.md) pour l'ordre de lecture complet. Les [10 principes de conception](17_PRINCIPES_CONCEPTION.md) arbitrent toute décision.
+> Voir aussi le [Guide de lecture](GUIDE_LECTURE.md) pour l'ordre de lecture complet. Les [10 principes de conception](17_PRINCIPES_CONCEPTION.md) arbitrent toute décision. Les [modules futurs](27_FUTURE_MODULES.md) définissent la vision d'extensibilité à garder en tête dès la conception.
 
 ## 1. Règles fondamentales
 

@@ -66,6 +66,10 @@ Découpage par versions. Les IDs renvoient au [catalogue de fonctionnalités](03
 
 - Remplissage vocal conversationnel (COL-17b), analyse prédictive et alertes précoces (AI-10), analyse d'images terrain (comptage/mesure — exploration), positionnement assisté avancé ([15_INNOVATIONS.md](15_INNOVATIONS.md)).
 
+## Au-delà — Modules spécialisés (post-Enterprise)
+
+Les versions ci-dessus couvrent le cœur de la plateforme et ses extensions immédiates. Au-delà, les modules spécialisés (télédétection, drone, IoT, IA vision, GIS avancé, météo, analytics avancés, copilote IA, integration hub, plugin marketplace) sont détaillés dans [27_FUTURE_MODULES.md](27_FUTURE_MODULES.md). L'architecture et les API sont conçues dès le départ pour les accueillir sans refonte.
+
 ## Risques principaux et parades
 
 | Risque | Impact | Parade |

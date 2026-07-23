@@ -67,6 +67,8 @@ Outillage : pnpm workspaces + Turborepo, ESLint/Prettier partagés, Changesets p
 | ADR-11 | Open-core : **AGPL-3.0** (cœur) + **MIT** (packages/shared) + premium propriétaire | AGPL protège contre la reprise SaaS sans contribution ; MIT favorise l'interopérabilité avec intégrateurs ; premium finance le développement. Détails et frontière open/premium dans [21_MONETISATION §7](21_MONETISATION.md) | AGPL perçue comme restrictive (relicenciable en MIT si frein constaté), MIT seul (pas de protection) |
 | ADR-12 | Fournisseur satellite premium : **Planet** (add-on) + **Sentinel Hub** (socle radar gratuit) | Planet : revisite quotidienne, programme NICFI gratuit ONG forêts, API XYZ/WMS. Sentinel Hub : radar Sentinel-1 gratuit (traverse nuages — indispensable zones tropicales). Voir [08_GIS §2b](08_GIS.md) et [23_COUTS §5](23_COUTS.md) | Maxar (trop coûteux, pas de programme ONG), MapTiler satellite (résolution insuffisante pour usage premium) |
 
+> La vision complète des modules futurs (IoT, drone, télédétection, IA vision, plugins…) est détaillée dans [27_FUTURE_MODULES.md](27_FUTURE_MODULES.md). L'architecture modulaire ci-dessous est conçue pour les accueillir sans refonte.
+
 ## 3bis. Couche de données modulaire (base remplaçable)
 
 Principe : **aucun service métier ne connaît la base concrète.** Toute lecture/écriture passe par des interfaces de repository définies dans le domaine ; les implémentations sont interchangeables via un adaptateur choisi par configuration (`DATA_DRIVER`).

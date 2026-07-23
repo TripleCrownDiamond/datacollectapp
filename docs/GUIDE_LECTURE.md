@@ -6,7 +6,7 @@ Ce guide explique **quoi lire, dans quel ordre, et pourquoi**, selon qui vous ê
 
 | Famille | Documents | Ce qu'ils répondent |
 |---|---|---|
-| **Cap produit** | [01_VISION](01_VISION.md), [17_PRINCIPES_CONCEPTION](17_PRINCIPES_CONCEPTION.md), [12_ROADMAP](12_ROADMAP.md), [14_COMPETITIVE_ANALYSIS](14_COMPETITIVE_ANALYSIS.md), [15_INNOVATIONS](15_INNOVATIONS.md) | Pourquoi ce produit, ce qui le rend différent, où on va |
+| **Cap produit** | [01_VISION](01_VISION.md), [17_PRINCIPES_CONCEPTION](17_PRINCIPES_CONCEPTION.md), [12_ROADMAP](12_ROADMAP.md), [14_COMPETITIVE_ANALYSIS](14_COMPETITIVE_ANALYSIS.md), [15_INNOVATIONS](15_INNOVATIONS.md), [27_FUTURE_MODULES](27_FUTURE_MODULES.md) | Pourquoi ce produit, ce qui le rend différent, où on va, modules futurs |
 | **Exigences** | [02_PRD](02_PRD.md), [03_FEATURES](03_FEATURES.md), [16_GLOSSAIRE](16_GLOSSAIRE.md) | Ce que le produit doit faire, priorisé et traçable |
 | **Expérience** | [04_UX](04_UX.md), [05_MOBILE](05_MOBILE.md), [06_WEB](06_WEB.md), [13_DESIGN_SYSTEM](13_DESIGN_SYSTEM.md) | À quoi ressemble et comment se comporte le produit |
 | **Technique** | [00_GUIDE_AGENT](00_GUIDE_AGENT.md), [09_ARCHITECTURE](09_ARCHITECTURE.md), [10_DATABASE](10_DATABASE.md), [11_API](11_API.md), [07_AI](07_AI.md), [08_GIS](08_GIS.md), [18_XLSFORM](18_XLSFORM.md), [19_ANALYSE](19_ANALYSE.md), [20_DEPLOIEMENT](20_DEPLOIEMENT.md) | Comment c'est construit, déployé et comment on le construit |
@@ -22,7 +22,7 @@ Ce guide explique **quoi lire, dans quel ordre, et pourquoi**, selon qui vous ê
 4. [03_FEATURES](03_FEATURES.md) — le catalogue complet des capacités.
 5. [20_DEPLOIEMENT](20_DEPLOIEMENT.md) — SaaS ou installation sur vos serveurs (souveraineté).
 6. [14_COMPETITIVE_ANALYSIS](14_COMPETITIVE_ANALYSIS.md) — vs KoboToolbox, ODK, Survey123…
-7. [12_ROADMAP](12_ROADMAP.md) et [16_GLOSSAIRE](16_GLOSSAIRE.md).
+7. [12_ROADMAP](12_ROADMAP.md), [16_GLOSSAIRE](16_GLOSSAIRE.md) et [27_FUTURE_MODULES](27_FUTURE_MODULES.md).
 
 ### 💼 Investisseur (30 min) — « Est-ce un bon pari ? »
 1. [22_PRESENTATION Partie A](22_PRESENTATION.md) — le pitch structuré (deck).
@@ -87,6 +87,7 @@ Ordre **strict** (chaque étape produit une base testable) :
 | 24 | [Risques & lacunes](24_RISQUES_ET_LACUNES.md) | Réalisme d'exécution, MVP V0, registre |
 | 25 | [Éthique & consentement](25_ETHIQUE_CONSENTEMENT.md) | Do-no-harm, consentement enquêtés, conformité |
 | 26 | [Sécurité & modèle de menace](26_SECURITE_MODELE_MENACE.md) | Menaces, contrôles, plan solo |
+| 27 | [Modules futurs & extensibilité](27_FUTURE_MODULES.md) | Modules planifiés (IoT, drone, télédétection, IA vision, plugins…) |
 
 ## 4. Comment cette doc reste vivante
 
@@ -111,3 +112,4 @@ Ordre **strict** (chaque étape produit une base testable) :
 | « Quel modèle économique / quels prix ? » | [21_MONETISATION](21_MONETISATION.md) |
 | « Combien ça coûte à opérer / à auto-héberger / en IA ? » | [23_COUTS](23_COUTS.md) |
 | « Comment présenter le projet à un investisseur/client ? » | [22_PRESENTATION](22_PRESENTATION.md) |
+| « Quels modules futurs sont prévus (IoT, drone, satellites…) ? » | [27_FUTURE_MODULES](27_FUTURE_MODULES.md) |
