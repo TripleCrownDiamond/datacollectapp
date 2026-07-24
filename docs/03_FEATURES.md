@@ -1,6 +1,6 @@
 # 03 — Catalogue des fonctionnalités
 
-Catalogue exhaustif, priorisé par version (V1 = MVP, V2, V3, ENT = Enterprise, IA+ = version IA avancée — voir [12_ROADMAP.md](12_ROADMAP.md)). Les modules futurs (télédétection, drone, IoT, plugins…) sont catalogués dans [27_FUTURE_MODULES.md](27_FUTURE_MODULES.md). Chaque fonctionnalité implémentée doit référencer son ID.
+Catalogue exhaustif, priorisé par version (**V0 = socle fiable**, V1, V2, V3, ENT = Enterprise, IA+ = version IA avancée — voir [12_ROADMAP.md](12_ROADMAP.md)). ⚠️ Les entrées marquées « V1 » antérieures au découpage V0/V1 sont à relire à l'aune du [périmètre V0](24_RISQUES_ET_LACUNES.md) : seul le socle (collecte offline, builder manuel, sync, table/carte, export) est engagé en premier. Les modules futurs (télédétection, drone, IoT, plugins…) sont catalogués dans [27_FUTURE_MODULES.md](27_FUTURE_MODULES.md). Chaque fonctionnalité implémentée doit référencer son ID.
 
 ## 1. Collecte (mobile)
 
@@ -119,6 +119,7 @@ Détail : [19_ANALYSE.md](19_ANALYSE.md).
 | ANA-04 | Stats avancées | Corrélations, régression linéaire, ANOVA, séries temporelles | V3 |
 | ANA-05 | Rapports IA | Résumé exécutif, indicateurs, interprétation, recommandations, rapports technique/scientifique/mission | V2/V3 |
 | ANA-06 | Exports statistiques | SPSS (.sav), Stata (.dta), PDF avec métadonnées | V3 |
+| ANA-07 | Analyse multivariée | ACP (analyse en composantes principales), clustering — issu de [27_FUTURE_MODULES §10](27_FUTURE_MODULES.md) | V3+ |
 
 ## 8. Plateforme & Enterprise
 

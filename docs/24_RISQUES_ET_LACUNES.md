@@ -44,6 +44,8 @@ Gravité : 🔴 critique · 🟠 importante · 🟡 à traiter.
 | R8 | Juridique concret absent (CGU, confidentialité, DPA) | 🟠 | Indispensable dès le 1er client Enterprise | Modèles à rédiger avant vente | [25 §6](25_ETHIQUE_CONSENTEMENT.md) |
 | R9 | i18n réelle : RTL + langues du Sud | 🟡 | Cible mondiale (arabe RTL, swahili, PT, ES) | Prévoir RTL et pluralisation dès l'archi UI | [04_UX](04_UX.md) |
 | R10 | Doc utilisateur & communauté | 🟡 | Adoption Kobo/ODK doit beaucoup à leur communauté | Centre d'aide minimal + stratégie communauté (post-V0) | [12_ROADMAP](12_ROADMAP.md) |
+| R11 | **Notifications non spécifiées** | 🟠 | Listées comme module cœur ([27 §2](27_FUTURE_MODULES.md)) mais absentes de l'API et du schéma BDD ; conditionnent le workflow d'approbation (D4) et les alertes terrain | Spécifier le modèle (push/email/SMS) dans [11_API](11_API.md) + [10_DATABASE](10_DATABASE.md) avant la V1 | [11_API](11_API.md) |
+| R12 | Catalogue de modules futurs = risque de dérive de périmètre | 🟠 | 10 modules × ~100 fonctions peuvent réactiver le « tout vouloir » que R1 combat | [27](27_FUTURE_MODULES.md) recadré : catalogue d'extensibilité, **pas** un engagement ; horizons explicites par module | [27_FUTURE_MODULES](27_FUTURE_MODULES.md) |
 
 ## 5. Validation terrain (à faire avant/pendant V0)
 

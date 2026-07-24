@@ -1,0 +1,421 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ── Users & Authentication ──
+
+model User {
+  id              String   @id @default(uuid()) @db.Uuid
+  email           String   @unique
+  passwordHash    String   @map("password_hash")
+  fullName        String   @map("full_name")
+  locale          String   @default("fr")
+  emailVerifiedAt DateTime? @map("email_verified_at") @db.Timestamptz()
+  disabledAt      DateTime? @map("disabled_at") @db.Timestamptz()
+  createdAt       DateTime @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt       DateTime @updatedAt @map("updated_at") @db.Timestamptz()
+
+  memberships     Membership[]
+  refreshTokens   RefreshToken[]
+  createdInvites  Invitation[]          @relation("InvitationCreator")
+  projectMembers  ProjectMember[]
+  createdProjects Project[]            @relation("ProjectCreator")
+  createdForms    Form[]
+  submissions     Submission[]         @relation("SubmissionSubmitter")
+  reviewedSubmissions Submission[]     @relation("SubmissionReviewer")
+  geoFeatures     GeoFeature[]
+  aiJobs          AiJob[]
+  exportJobs      ExportJob[]
+  formAssignments FormAssignment[]
+
+  @@map("users")
+}
+
+model RefreshToken {
+  id         String    @id @default(uuid()) @db.Uuid
+  userId     String    @map("user_id") @db.Uuid
+  tokenHash  String    @map("token_hash")
+  deviceInfo String?   @map("device_info")
+  expiresAt  DateTime  @map("expires_at") @db.Timestamptz()
+  revokedAt  DateTime? @map("revoked_at") @db.Timestamptz()
+  createdAt  DateTime  @default(now()) @map("created_at") @db.Timestamptz()
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("refresh_tokens")
+}
+
+// ── Organizations & Roles ──
+
+model Organization {
+  id        String    @id @default(uuid()) @db.Uuid
+  slug      String    @unique
+  name      String
+  plan      String    @default("free")
+  settings  Json      @default("{}")
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt DateTime  @updatedAt @map("updated_at") @db.Timestamptz()
+  deletedAt DateTime? @map("deleted_at") @db.Timestamptz()
+
+  memberships       Membership[]
+  roles             Role[]
+  projects          Project[]
+  invitations       Invitation[]
+  forms             Form[]
+  formVersions      FormVersion[]
+  formAssignments   FormAssignment[]
+  submissions       Submission[]
+  submissionRevisions SubmissionRevision[]
+  attachments       Attachment[]
+  geoFeatures       GeoFeature[]
+  aiJobs            AiJob[]
+  exportJobs        ExportJob[]
+
+  @@map("organizations")
+}
+
+model Role {
+  id             String   @id @default(uuid()) @db.Uuid
+  organizationId String?  @map("organization_id") @db.Uuid
+  key            String
+  name           String
+  isPreset       Boolean  @default(false) @map("is_preset")
+  createdAt      DateTime @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt      DateTime @updatedAt @map("updated_at") @db.Timestamptz()
+
+  organization   Organization?  @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  permissions    RolePermission[]
+  memberships    Membership[]
+  projectMembers ProjectMember[]
+
+  @@unique([organizationId, key])
+  @@map("roles")
+}
+
+model RolePermission {
+  roleId     String @map("role_id") @db.Uuid
+  permission String
+
+  role Role @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+  @@id([roleId, permission])
+  @@map("role_permissions")
+}
+
+model Membership {
+  id             String    @id @default(uuid()) @db.Uuid
+  organizationId String    @map("organization_id") @db.Uuid
+  userId         String    @map("user_id") @db.Uuid
+  roleId         String    @map("role_id") @db.Uuid
+  invitedBy      String?   @map("invited_by") @db.Uuid
+  joinedAt       DateTime  @default(now()) @map("joined_at") @db.Timestamptz()
+  isActive       Boolean   @default(true) @map("is_active")
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role         Role         @relation(fields: [roleId], references: [id])
+
+  @@unique([organizationId, userId])
+  @@map("memberships")
+}
+
+model ProjectMember {
+  id             String   @id @default(uuid()) @db.Uuid
+  organizationId String   @map("organization_id") @db.Uuid
+  projectId      String   @map("project_id") @db.Uuid
+  userId         String   @map("user_id") @db.Uuid
+  roleId         String   @map("role_id") @db.Uuid
+  createdAt      DateTime @default(now()) @map("created_at") @db.Timestamptz()
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  role    Role    @relation(fields: [roleId], references: [id])
+
+  @@unique([projectId, userId])
+  @@map("project_members")
+}
+
+// ── Invitations ──
+
+model Invitation {
+  id             String    @id @default(uuid()) @db.Uuid
+  organizationId String    @map("organization_id") @db.Uuid
+  email          String
+  roleKey        String    @map("role_key")
+  token          String    @unique
+  expiresAt      DateTime  @map("expires_at") @db.Timestamptz()
+  acceptedAt     DateTime? @map("accepted_at") @db.Timestamptz()
+  createdById    String    @map("created_by") @db.Uuid
+  createdAt      DateTime  @default(now()) @map("created_at") @db.Timestamptz()
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  createdBy    User         @relation("InvitationCreator", fields: [createdById], references: [id])
+
+  @@map("invitations")
+}
+
+// ── Projects ──
+
+model Project {
+  id             String    @id @default(uuid()) @db.Uuid
+  organizationId String    @map("organization_id") @db.Uuid
+  name           String
+  description    String?
+  status         String    @default("draft")
+  languages      String[]  @default(["fr"])
+  timezone       String    @default("UTC")
+  settings       Json      @default("{}")
+  createdById    String    @map("created_by") @db.Uuid
+  createdAt      DateTime  @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt      DateTime  @updatedAt @map("updated_at") @db.Timestamptz()
+  deletedAt      DateTime? @map("deleted_at") @db.Timestamptz()
+
+  organization   Organization    @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  createdBy      User            @relation("ProjectCreator", fields: [createdById], references: [id])
+  projectMembers ProjectMember[]
+  forms          Form[]
+  submissions    Submission[]
+  geoFeatures    GeoFeature[]
+  exportJobs     ExportJob[]
+
+  @@index([organizationId, status])
+  @@map("projects")
+}
+
+// ── Forms (skeleton — full implementation in Phase 2) ──
+
+model Form {
+  id              String      @id @default(uuid()) @db.Uuid
+  organizationId  String      @map("organization_id") @db.Uuid
+  projectId       String      @map("project_id") @db.Uuid
+  name            String
+  status          String      @default("draft")
+  currentVersion  Int         @default(0) @map("current_version")
+  draftSchema     Json?       @map("draft_schema")
+  createdById     String      @map("created_by") @db.Uuid
+  createdAt       DateTime    @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt       DateTime    @updatedAt @map("updated_at") @db.Timestamptz()
+  deletedAt       DateTime?   @map("deleted_at") @db.Timestamptz()
+
+  organization   Organization    @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  project        Project         @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  createdBy      User            @relation(fields: [createdById], references: [id])
+  formVersions   FormVersion[]
+  submissions    Submission[]
+  assignments    FormAssignment[]
+
+  @@index([projectId, status])
+  @@map("forms")
+}
+
+model FormVersion {
+  id             String   @id @default(uuid()) @db.Uuid
+  organizationId String   @map("organization_id") @db.Uuid
+  formId         String   @map("form_id") @db.Uuid
+  version        Int
+  schema         Json
+  publishedById  String   @map("published_by") @db.Uuid
+  publishedAt    DateTime @default(now()) @map("published_at") @db.Timestamptz()
+
+  organization Organization @relation(fields: [organizationId], references: [id])
+  form         Form         @relation(fields: [formId], references: [id], onDelete: Cascade)
+
+  @@unique([formId, version])
+  @@map("form_versions")
+}
+
+model FormAssignment {
+  id             String   @id @default(uuid()) @db.Uuid
+  organizationId String   @map("organization_id") @db.Uuid
+  formId         String   @map("form_id") @db.Uuid
+  userId         String?  @map("user_id") @db.Uuid
+  createdAt      DateTime @default(now()) @map("created_at") @db.Timestamptz()
+
+  organization Organization @relation(fields: [organizationId], references: [id])
+  form         Form         @relation(fields: [formId], references: [id], onDelete: Cascade)
+  user         User?        @relation(fields: [userId], references: [id])
+
+  @@unique([formId, userId])
+  @@map("form_assignments")
+}
+
+// ── Submissions & Media ──
+
+model Submission {
+  id              String   @id @default(uuid()) @db.Uuid
+  organizationId  String   @map("organization_id") @db.Uuid
+  projectId       String   @map("project_id") @db.Uuid
+  formId          String   @map("form_id") @db.Uuid
+  formVersion     Int      @map("form_version")
+  submittedById   String   @map("submitted_by") @db.Uuid
+  data            Json
+  status          String   @default("submitted")
+  revision        Int      @default(1)
+  rejectionReason String?  @map("rejection_reason")
+  reviewedById    String?  @map("reviewed_by") @db.Uuid
+  reviewedAt      DateTime? @map("reviewed_at") @db.Timestamptz()
+  geom            String?  @db.VarChar(255)
+  meta            Json     @default("{}")
+  qualityFlags    Json     @default("[]") @map("quality_flags")
+  createdAt       DateTime @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt       DateTime @updatedAt @map("updated_at") @db.Timestamptz()
+  deletedAt       DateTime? @map("deleted_at") @db.Timestamptz()
+
+  organization     Organization        @relation(fields: [organizationId], references: [id])
+  project          Project             @relation(fields: [projectId], references: [id])
+  form             Form                @relation(fields: [formId], references: [id])
+  submittedBy      User                @relation("SubmissionSubmitter", fields: [submittedById], references: [id])
+  reviewedBy       User?               @relation("SubmissionReviewer", fields: [reviewedById], references: [id])
+  revisions        SubmissionRevision[]
+  attachments      Attachment[]
+
+  @@index([organizationId, projectId, formId, createdAt(sort: Desc)])
+  @@index([submittedById, createdAt(sort: Desc)])
+  @@index([formId, status])
+  @@map("submissions")
+}
+
+model SubmissionRevision {
+  id             String   @id @default(uuid()) @db.Uuid
+  organizationId String   @map("organization_id") @db.Uuid
+  submissionId   String   @map("submission_id") @db.Uuid
+  revision       Int
+  data           Json
+  meta           Json     @default("{}")
+  createdAt      DateTime @default(now()) @map("created_at") @db.Timestamptz()
+
+  organization Organization @relation(fields: [organizationId], references: [id])
+  submission   Submission   @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+
+  @@unique([submissionId, revision])
+  @@map("submission_revisions")
+}
+
+model Attachment {
+  id             String   @id @default(uuid()) @db.Uuid
+  organizationId String   @map("organization_id") @db.Uuid
+  submissionId   String   @map("submission_id") @db.Uuid
+  questionName   String   @map("question_name")
+  fileName       String   @map("file_name")
+  mimeType       String   @map("mime_type")
+  sizeBytes      BigInt   @map("size_bytes")
+  storageKey     String   @map("storage_key")
+  status         String   @default("declared")
+  receivedBytes  BigInt   @default(0) @map("received_bytes")
+  checksumSha256 String?  @map("checksum_sha256")
+  createdAt      DateTime @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt      DateTime @updatedAt @map("updated_at") @db.Timestamptz()
+
+  organization Organization @relation(fields: [organizationId], references: [id])
+  submission   Submission   @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+
+  @@index([submissionId])
+  @@map("attachments")
+}
+
+// ── GIS Features ──
+
+model GeoFeature {
+  id              String    @id @default(uuid()) @db.Uuid
+  organizationId  String    @map("organization_id") @db.Uuid
+  projectId       String    @map("project_id") @db.Uuid
+  layer           String
+  kind            String
+  name            String
+  properties      Json      @default("{}")
+  geom            String    @db.VarChar(4096)
+  sourceImportId  String?   @map("source_import_id") @db.Uuid
+  createdById     String    @map("created_by") @db.Uuid
+  createdAt       DateTime  @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt       DateTime  @updatedAt @map("updated_at") @db.Timestamptz()
+  deletedAt       DateTime? @map("deleted_at") @db.Timestamptz()
+
+  organization Organization @relation(fields: [organizationId], references: [id])
+  project      Project      @relation(fields: [projectId], references: [id])
+  createdBy    User         @relation(fields: [createdById], references: [id])
+
+  @@index([organizationId, projectId, layer])
+  @@map("geo_features")
+}
+
+// ── AI & Export Jobs ──
+
+model AiJob {
+  id             String    @id @default(uuid()) @db.Uuid
+  organizationId String    @map("organization_id") @db.Uuid
+  createdById    String    @map("created_by") @db.Uuid
+  kind           String
+  status         String    @default("queued")
+  input          Json
+  output         Json?
+  error          String?
+  model          String?
+  tokensIn       Int?      @map("tokens_in")
+  tokensOut      Int?      @map("tokens_out")
+  costUsd        Decimal?  @map("cost_usd") @db.Decimal(10, 5)
+  createdAt      DateTime  @default(now()) @map("created_at") @db.Timestamptz()
+  startedAt      DateTime? @map("started_at") @db.Timestamptz()
+  finishedAt     DateTime? @map("finished_at") @db.Timestamptz()
+
+  organization Organization @relation(fields: [organizationId], references: [id])
+  createdBy    User         @relation(fields: [createdById], references: [id])
+
+  @@index([organizationId, kind, status])
+  @@map("ai_jobs")
+}
+
+model ExportJob {
+  id             String    @id @default(uuid()) @db.Uuid
+  organizationId String    @map("organization_id") @db.Uuid
+  projectId      String    @map("project_id") @db.Uuid
+  createdById    String    @map("created_by") @db.Uuid
+  kind           String
+  filters        Json      @default("{}")
+  status         String
+  storageKey     String?   @map("storage_key")
+  error          String?
+  createdAt      DateTime  @default(now()) @map("created_at") @db.Timestamptz()
+  finishedAt     DateTime? @map("finished_at") @db.Timestamptz()
+
+  organization Organization @relation(fields: [organizationId], references: [id])
+  project      Project      @relation(fields: [projectId], references: [id])
+  createdBy    User         @relation(fields: [createdById], references: [id])
+
+  @@index([organizationId, projectId, kind])
+  @@map("export_jobs")
+}
+
+// ── Audit ──
+
+model AuditLog {
+  id             BigInt   @id @default(autoincrement())
+  organizationId String   @map("organization_id") @db.Uuid
+  userId         String   @map("user_id") @db.Uuid
+  action         String
+  entityType     String   @map("entity_type")
+  entityId       String   @map("entity_id") @db.Uuid
+  details        Json     @default("{}")
+  ip             String?
+  createdAt      DateTime @default(now()) @map("created_at") @db.Timestamptz()
+
+  @@index([organizationId, createdAt(sort: Desc)])
+  @@map("audit_log")
+}
+
+// ── Sync ──
+
+model SyncCursor {
+  userId        String   @map("user_id") @db.Uuid
+  deviceId      String   @map("device_id")
+  lastPulledAt  DateTime @default(now()) @map("last_pulled_at") @db.Timestamptz()
+  lastPushedAt  DateTime @default(now()) @map("last_pushed_at") @db.Timestamptz()
+
+  @@id([userId, deviceId])
+  @@map("sync_cursors")
+}

@@ -1,0 +1,30 @@
+{
+  "name": "@terracollect/form-engine",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist",
+    "lint": "echo 'lint ok'",
+    "test": "tsx --test tests/**/*.test.ts",
+    "test:watch": "tsx --test --watch tests/**/*.test.ts"
+  },
+  "dependencies": {
+    "@terracollect/shared": "workspace:*"
+  },
+  "devDependencies": {
+    "@terracollect/typescript-config": "workspace:*",
+    "typescript": "^5.5.0",
+    "tsx": "^4.19.0"
+  }
+}

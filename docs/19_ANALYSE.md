@@ -23,6 +23,7 @@ Disponible dans l'onglet « Analyse » de chaque projet (web).
 | Régression linéaire | simple et multiple, coefficients, R², p-values, diagnostics | V3 |
 | ANOVA | comparaison de moyennes entre groupes (one-way, two-way) | V3 |
 | Statistiques descriptives par groupe | agrégats segmentés (par village, par enquêteur, par période) | V3 |
+| **ACP & clustering** (ANA-07) | analyse en composantes principales, partitionnement (k-means/hiérarchique) — typologies de ménages, de parcelles | V3+ |
 
 **Architecture de calcul.** Les statistiques descriptives simples sont calculées en SQL (PostgreSQL, y compris fonctions d'agrégation et fenêtrage). Les analyses avancées (régression, ANOVA, corrélations) sont exécutées par un **moteur statistique serveur** dédié — job asynchrone ([09_ARCHITECTURE §4](09_ARCHITECTURE.md)) s'appuyant sur une bibliothèque éprouvée (option privilégiée : microservice Python `scipy`/`statsmodels`/`pandas` appelé par l'API ; alternative : bibliothèque JS pour les cas simples). Chaque résultat expose sa **méthode, ses hypothèses et ses limites** ; jamais de conclusion sans les diagnostics associés.
 

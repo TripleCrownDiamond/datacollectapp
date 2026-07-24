@@ -66,6 +66,7 @@ La documentation est organisée pour trois publics : **clients/parties prenantes
 | 24 | [Risques & lacunes](docs/24_RISQUES_ET_LACUNES.md) | Réalisme d'exécution (solo/vibecode), MVP V0, registre priorisé | **À lire d'abord** |
 | 25 | [Éthique & consentement](docs/25_ETHIQUE_CONSENTEMENT.md) | Do-no-harm, consentement des enquêtés, minimisation, conformité | Tous |
 | 26 | [Sécurité & modèle de menace](docs/26_SECURITE_MODELE_MENACE.md) | Menaces, contrôles par couche, plan solo, pentest | Devs / Enterprise |
+| 27 | [Modules futurs & extensibilité](docs/27_FUTURE_MODULES.md) | Catalogue d'extensibilité (IoT, drone, télédétection, plugins) — **pas un engagement de roadmap** | Devs / Tous |
 
 **Parcours de lecture conseillés** (détaillés dans le [Guide de lecture](docs/GUIDE_LECTURE.md)) :
 

@@ -1,0 +1,31 @@
+# ── TerraCollect Dev Override ──
+# Extends docker-compose.yml with development-specific settings.
+# Auto-loaded by docker compose when the file exists alongside docker-compose.yml.
+# Usage: docker compose -f infra/docker-compose.yml -f infra/docker-compose.override.yml up
+
+version: "3.8"
+
+services:
+  postgres:
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  minio:
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - miniodata:/data
+
+  redis:
+    ports:
+      - "6379:6379"
+    volumes:
+      - redisdata:/data
+
+volumes:
+  pgdata:
+  miniodata:
+  redisdata:
